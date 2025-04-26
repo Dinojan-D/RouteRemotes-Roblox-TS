@@ -1,0 +1,34 @@
+# Node modules
+node_modules/
+
+# Roblox-TS build output
+out/
+
+# Roblox-TS build artifacts
+build/
+rbxts_include/
+
+# Roblox project files
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+*.rbxms
+
+# Roblox Studio temporary files
+*.log
+*.tmp
+*.bak
+*.autosave
+
+# IDE/Editor folders
+.vscode/
+.idea/
+.DS_Store
+
+# Roblox-TS compiler artifacts
+package-lock.json
+
+# Environment / Secrets
+.env
+.env.local
