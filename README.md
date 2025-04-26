@@ -42,40 +42,42 @@ Network.start();
 
 // Create a RemoteEvent with middleware
 Network.NewRoute("root/communication/message", {
-    endPoint: "additions",
-    secure: true,
-    remoteType: "function",
-    middleware: new Middleware(1, [
-        (player, msg1, msg2) => {
-            if (typeOf(msg1) !== "string") throw "First argument must be a string!";
-            if (typeOf(msg2) !== "string") throw "Second argument must be a string!";
-        },
-    ]),
+	endPoint: "additions",
+	secure: true,
+	remoteType: "function",
+	middleware: new Middleware(1, [
+		(player: Player, msg1, msg2) => {
+			if (typeOf(msg1) !== "string") throw "First argument must be a string!";
+			if (typeOf(msg2) !== "string") throw "Second argument must be a string!";
+		},
+	]),
 });
 
 // Handle incoming event
-Network.OnEvent("Connect", "root/communication/message", (player, ...args) => {
-    const [msg1, msg2] = args as [string, string];
-    print(`[Server]: Message from ${player.Name}: ${msg1}, ${msg2}`);
-    Network.FireClient("root/communication/message", player, `Hello ${player.Name}`, msg2);
+Network.OnEvent("Connect", "root/communication/message", (player: Player, ...args) => {
+	const [msg1, msg2] = args as [string, string];
+	print(`[Server]: Message from ${player.Name}: ${msg1}, ${msg2}`);
+	Network.FireClient("root/communication/message", player, `Hello ${player.Name}`, msg2);
 });
 
 // Setup a RemoteFunction-like call
 Network.NewRoute("root", {
-    endPoint: "additions",
-    secure: true,
-    remoteType: "function",
-    middleware: new Middleware(1, [
-        (player, number1, number2) => {
-            if (typeOf(number1) !== "number") throw "First argument must be a number!";
-            if (typeOf(number2) !== "number") throw "Second argument must be a number!";
-        },
-    ]),
+	endPoint: "additions",
+	secure: true,
+	remoteType: "function",
+	middleware: new Middleware(1, [
+		(player: Player, number1, number2) => {
+			print(number1, number2);
+			if (typeOf(number1) !== "number") throw "First argument must be a number!";
+			if (typeOf(number2) !== "number") throw "Second argument must be a number!";
+		},
+	]),
 });
 
-Network.OnInvoke("Connect", "root/additions", (player, number1, number2) => {
-    return (number1 as number) + (number2 as number);
+Network.OnInvoke("Connect", "root/additions", (player: Player, number1, number2) => {
+	return (number1 as number) + (number2 as number);
 });
+
 ```
 
 ### Client-Side
@@ -91,13 +93,15 @@ Network.FireServer("root/communication/message", "Hello", "Hi");
 
 // Listen for server messages
 Network.OnEvent("Connect", "root/communication/message", (...args) => {
-    const [msg1, msg2] = args as [string, string];
-    print(`[Client]: Server message: ${msg1}, ${msg2}`);
+	const [msg1, msg2] = args as [string, string];
+	print(`[Client]: Server message: ${msg1}, ${msg2}`);
 });
 
 // Perform a RemoteFunction-like call
-const result = Network.InvokeServer("root/additions", 5, 100);
-print(`[Client]: Result from server:`, result);
+const waitTime = 4;
+const result = Network.InvokeServer("root/additions", waitTime, 5, 100);
+print(`[Client]: Result from server: `, result);
+
 ```
 
 # 🔗 License
