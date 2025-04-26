@@ -100,3 +100,6 @@ const result = Network.InvokeServer("root/additions", 5, 100);
 print(`[Client]: Result from server:`, result);
 ```
 
+# 🔗 License
+MIT License. Free to use, modify, and contribute!
+
